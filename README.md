@@ -145,4 +145,8 @@ Trained models available on Zenodo: (link to be added)
 
 ## License
 
+<<<<<<< HEAD
 MIT License
+=======
+MIT License
+>>>>>>> e1f0c9a85999875a4d720cc501bde8aaea0fd64c
