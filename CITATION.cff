@@ -1,28 +1,26 @@
 cff-version: 1.2.0
-title: "Yemeni Currency Recognition using YOLO-assisted CNN"
+title: "YOLO-Assisted Yemeni Currency Recognition"
 message: "If you use this software, please cite it as below."
 type: software
 
 authors:
   - family-names: Molhi
-    given-names: Majed Abdullah Abdulqawi
-    affiliation: "Ibb University"
-    country: YE
+    given-names: Majed
+    affiliation: "Chandigarh University"
 
 version: 1.0.0
 date-released: 2025-12-27
 
-repository-code: "https://github.com/USERNAME/Yemeni-Currency-Recognition"
+repository-code: "https://github.com/majedmolhi/YOLO-Assisted-Yemeni-Currency-Recognition"
 
 keywords:
   - Yemeni currency
   - banknote recognition
   - deep learning
-  - YOLO
-  - EfficientNet
+  - YOLOv8
+  - EfficientNetV2S
   - computer vision
   - ROI extraction
   - bias ablation
-  - Grad-CAM
 
 license: MIT
