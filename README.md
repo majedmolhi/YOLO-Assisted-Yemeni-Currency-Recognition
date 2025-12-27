@@ -1,184 +1,148 @@
-# Yemeni Currency Recognition using YOLO-assisted CNN
+# YOLO-Assisted Yemeni Currency Recognition
 
-This repository presents a **complete, reproducible, and academically structured pipeline**
-for Yemeni paper currency recognition using a **YOLO-assisted ROI-based classification**
-framework built on **EfficientNetV2S**.
-
-The project is designed for **research reproducibility**, **fair experimental comparison**,
-**cross-currency generalization analysis**, and **local deployment**.
-
----
+A two-stage deep learning framework for Yemeni banknote recognition, combining YOLOv8-assisted ROI detection with EfficientNetV2S classification.
 
 ## Overview
 
-The proposed system follows a two-stage pipeline:
+The system follows a two-stage pipeline:
 
-1. **Banknote Detection (YOLO)**  
-   Automatic extraction of the Region of Interest (ROI) to suppress background influence.
+1. **Banknote Detection (YOLOv8)**: Automatic extraction of Region of Interest (ROI) to reduce background influence.
+2. **Currency Classification (EfficientNetV2S)**: Fine-tuned model for denomination recognition.
 
-2. **Currency Classification (CNN)**  
-   Fine-tuned EfficientNetV2S model for Yemeni banknote denomination recognition.
-
-The framework is evaluated on Yemeni banknotes (RAW vs ROI) and further tested on
-Indian and Thai banknotes to assess cross-currency generalization.
-
----
+The framework is evaluated on Yemeni banknotes and validated on Indian-Thai banknotes for cross-currency generalization.
 
 ## Key Contributions
 
-- YOLO-assisted ROI extraction to reduce background bias  
-- Fair RAW vs ROI comparison under identical experimental settings  
-- Bias ablation analysis for robustness verification  
-- Grad-CAM visual explanations for interpretability  
-- Cross-currency generalization evaluation without retraining the detector  
-- Fully reproducible and modular research pipeline  
+- YOLO-assisted ROI extraction to reduce background bias
+- Fair RAW vs ROI comparison under identical settings
+- Background Bias Coefficient (BBC) metric for bias quantification
+- Cross-currency generalization via zero-shot YOLO transfer
+- Grad-CAM visualizations for model interpretability
 
----
+## Results
+
+### Yemeni Banknotes (6 classes, 1,691 images)
+
+| Model | CV Accuracy | Test Accuracy | BBC |
+|-------|-------------|---------------|-----|
+| RAW | 99.72% ± 0.26% | 100% | 76.77% |
+| ROI | 99.51% ± 0.36% | 99.61% | 79.84% |
+
+### Cross-Currency (15 classes, 2,800 images)
+
+| Dataset | YOLO Mode | Test Accuracy |
+|---------|-----------|---------------|
+| Indian + Thai | Zero-shot | 99.76% |
 
 ## Repository Structure
 
-```text
-Yemeni-Currency-Recognition/
-│
-├── api/                    # FastAPI deployment
+```
+YOLO-Assisted-Yemeni-Currency-Recognition/
+├── api/
 │   └── main.py
-│
 ├── src/
-│   ├── data/               # Dataset download & preprocessing
-│   ├── train/              # Training & cross-validation
-│   ├── eval/               # Bias ablation & evaluation
-│   └── inference/          # Prediction utilities
-│
-├── models/                 # Model placeholders (no binaries stored)
-│   └── README.md
-│
-├── notebooks/              # Reproducible experiments
-│   ├── Yemeni_Currency_Recognition.ipynb
-│   └── Indian_Thai_Generalization.ipynb
-│
-├── run_inference.py        # CLI inference
+│   ├── data/
+│   │   ├── download_yemeni.py
+│   │   ├── download_indian_thai.py
+│   │   ├── split_cv.py
+│   │   └── build_roi.py
+│   ├── train/
+│   │   └── train.py
+│   ├── eval/
+│   │   ├── bias_ablation.py
+│   │   └── test_eval.py
+│   └── inference/
+│       ├── predictor.py
+│       ├── preprocess.py
+│       └── utils.py
+├── notebooks/
+│   ├── Yemeni_Training.ipynb
+│   └── Indian_Thai_Training.ipynb
+├── models/                      
+├── run_inference.py
 ├── requirements.txt
 ├── CITATION.cff
-├── LICENSE
-└── README.md
-Datasets
-Yemeni Currency Dataset
-Denominations: 50, 100, 200, 250, 500, 1000
+└── LICENSE
+```
 
-Publicly available via Mendeley Data
+## Installation
 
-Official citation:
-
-MOLHI, MAJED (2025), “Yemeni Currency Recognition Dataset”,
-Mendeley Data, V2, doi: 10.17632/s56nbwsytx.2
-https://doi.org/10.17632/s56nbwsytx.2
-
-Indian & Thai Currency Dataset
-Used only for cross-currency generalization experiments
-
-Dataset source: (link to be added)
-
-Datasets are not included in this repository.
-
-Environment Setup
-bash
-Copy code
+```bash
+git clone https://github.com/majedmolhi/YOLO-Assisted-Yemeni-Currency-Recognition.git
+cd YOLO-Assisted-Yemeni-Currency-Recognition
 pip install -r requirements.txt
-Tested with:
+```
 
-Python 3.10+
+## Usage
 
-TensorFlow 2.16.1
+### Reproduce Experiments
 
-Ultralytics YOLOv8
+The notebooks are self-contained and ready to run. Dataset download scripts are included with Mendeley Data links.
 
-Usage Scenarios
-1. Running the Yemeni Experiment (Main Pipeline)
-The Yemeni notebook represents the primary experimental pipeline used in this study.
-Dataset download and preprocessing are handled automatically via the provided scripts.
+**Yemeni Currency (Main Experiment):**
+> Open and run: [`notebooks/Yemeni_Training.ipynb`](notebooks/Yemeni_Training.ipynb)
 
-Running the notebook reproduces all main results reported in the paper:
+**Cross-Currency Validation:**
+> Open and run: [`notebooks/Indian_Thai_Training.ipynb`](notebooks/Indian_Thai_Training.ipynb)
 
-text
-Copy code
-notebooks/Yemeni_Currency_Recognition.ipynb
-2. Cross-Currency Evaluation (Indian & Thai)
-The Indian–Thai notebook reuses the same pipeline and training configuration
-to evaluate cross-currency generalization without retraining the YOLO detector.
+### Inference with Pretrained Models
 
-text
-Copy code
-notebooks/Indian_Thai_Generalization.ipynb
-3. Inference Without Training (Using Pretrained Model)
-To perform inference without training:
+Download models from Zenodo and place in `models/` directory.
 
-Download the pretrained Yemeni ROI model from Zenodo
-(placeholder link)
-https://zenodo.org/record/XXXXXXXX
+```bash
+python run_inference.py --image path/to/banknote.jpg
+```
 
-Place the model file at:
+### API Deployment
 
-text
-Copy code
-models/yemeni_roi_best.keras
-Run inference using the CLI:
+```bash
+nohup python api/main.py > server.log 2>&1 &
+```
 
-bash
-Copy code
-python run_inference.py --image path/to/image.jpg
-REST API (Local Deployment)
-A RESTful API is provided for local deployment and reproducibility purposes.
-
-Run API
-bash
-Copy code
-python api/main.py
-Available Endpoints
-GET / – Health check
-
-POST /predict – Currency prediction
-
-Example request:
-
-bash
-Copy code
+```bash
 curl -X POST "http://127.0.0.1:8085/predict" \
-  -H "accept: application/json" \
   -H "Content-Type: multipart/form-data" \
-  -F "file=@image.jpg"
-The API is intended for research demonstration only
-and is not designed as a publicly hosted service.
+  -F "file=@banknote.jpg"
+```
 
-Results Summary
-Near-perfect accuracy on Yemeni banknotes
+## Datasets
 
-ROI-based models exhibit lower background dependency
+**Yemeni Currency Dataset**
+- Classes: 6 (50, 100, 200, 250, 500, 1000 YER)
+- Images: 1,691
+- Source: [Mendeley Data](https://doi.org/10.17632/s56nbwsytx.2)
 
-Strong generalization performance on Indian & Thai banknotes
+**Indian-Thai Currency Dataset**
+- Classes: 15 (10 Indian + 5 Thai)
+- Images: 2,800
+- Source: [Mendeley Data](https://doi.org/10.17632/2kfz5yc7pt.1)
 
-Grad-CAM visualizations confirm focus on discriminative regions
+## Training Configuration
 
-Detailed quantitative results and visual analyses are provided in the notebooks.
+| Parameter | Value |
+|-----------|-------|
+| Input Size | 224 × 224 |
+| Optimizer | AdamW (lr=3×10⁻⁴) |
+| Batch Size | 32 |
+| Max Epochs | 10 |
+| Validation | 5-Fold Stratified CV |
+| Test Split | 15% |
 
-Models & Weights
-All trained models and YOLO weights are archived on Zenodo.
+## Models
 
-Zenodo Record: (to be added)
+Trained models available on Zenodo: (link to be added)
 
-DOI: (to be added after Zenodo release)
+## Citation
 
-Code & Data Availability
-Code: GitHub (this repository)
+```bibtex
+@software{molhi2025yemeni,
+  author = {Molhi, Majed},
+  title = {YOLO-Assisted Yemeni Currency Recognition},
+  year = {2025},
+  url = {https://github.com/majedmolhi/YOLO-Assisted-Yemeni-Currency-Recognition}
+}
+```
 
-Models: Zenodo (link to be added)
+## License
 
-Datasets: Mendeley Data (Yemeni dataset publicly available)
-
-Citation
-If you use this work, please cite it using the metadata provided in CITATION.cff.
-
-License
-This project is released under the MIT License.
-
-yaml
-Copy code
+MIT License
