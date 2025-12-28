@@ -87,7 +87,7 @@ The notebooks are self-contained and ready to run. Dataset download scripts are 
 
 ### Inference with Pretrained Models
 
-Download models from [Zenodo](https://doi.org/10.5281/zenodo.18071819) and place in `models/` directory.
+Download models from [Zenodo](https://doi.org/10.5281/zenodo.18072007) and place in `models/` directory.
 
 ```bash
 python run_inference.py --image path/to/banknote.jpg
