@@ -87,7 +87,7 @@ The notebooks are self-contained and ready to run. Dataset download scripts are 
 
 ### Inference with Pretrained Models
 
-Download models from Zenodo and place in `models/` directory.
+Download models from [Zenodo](https://doi.org/10.5281/zenodo.18072007) and place in `models/` directory.
 
 ```bash
 python run_inference.py --image path/to/banknote.jpg
@@ -130,23 +130,13 @@ curl -X POST "http://127.0.0.1:8085/predict" \
 
 ## Models
 
-Trained models available on Zenodo: (link to be added)
+Trained models available on Zenodo: [https://doi.org/10.5281/zenodo.18071819](https://doi.org/10.5281/zenodo.18071819)
 
 ## Citation
 
-```bibtex
-@software{molhi2025yemeni,
-  author = {Molhi, Majed},
-  title = {YOLO-Assisted Yemeni Currency Recognition},
-  year = {2025},
-  url = {https://github.com/majedmolhi/YOLO-Assisted-Yemeni-Currency-Recognition}
-}
-```
+> Molhi, M. (2025). YOLOv8-Assisted Detection and EfficientNetV2S Classification for Robust Yemeni Banknote Recognition (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.18071819
 
 ## License
 
-<<<<<<< HEAD
 MIT License
-=======
-MIT License
->>>>>>> e1f0c9a85999875a4d720cc501bde8aaea0fd64c
+
