@@ -2,6 +2,14 @@
 
 A two-stage deep learning framework for Yemeni banknote recognition, combining YOLOv8-assisted ROI detection with EfficientNetV2S classification.
 
+## Live Demo & Deployment
+
+| | Link |
+|---|---|
+| Live Demo | [Try on Hugging Face Spaces](https://huggingface.co/spaces/majedmolhi/yemeni-currency-recognition) |
+| Docker | `docker pull majedmolhi/yemeni-currency` |
+
+
 ## Overview
 
 The system follows a two-stage pipeline:
